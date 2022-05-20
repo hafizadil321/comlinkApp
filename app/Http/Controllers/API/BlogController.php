@@ -28,7 +28,7 @@ class BlogController extends BaseController
             return $this->sendError($validator->errors());       
         }
         $blog = Blog::create($input);
-        return $this->sendResponse(new BlogResource($blog), 'Post created.');
+        return $this->sendResponse($blog, 'Post created.');
     }
    
     public function show($id)
