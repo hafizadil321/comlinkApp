@@ -13,15 +13,19 @@ class AuthController extends BaseController
 
     public function signin(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
-            $authUser = Auth::user(); 
-            $success['token'] =  $authUser->createToken('comlinkApp')->plainTextToken; 
-            $success['name'] =  $authUser->name;
+        // if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+        //     $authUser = Auth::user(); 
+        //     $success['token'] =  $authUser->createToken('comlinkApp')->plainTextToken; 
+        //     $success['name'] =  $authUser->name;
    
-            return $this->sendResponse($success, 'User signed in');
-        } 
+        //     return $this->sendResponse($success, 'User signed in');
+        // }
+        $customer = User::where('email', $request->email)->where('provider_id', 109)->first();
+        if ($customer) {
+            return $this->sendResponse($customer, 'User signed in');
+        }
         else{ 
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised'], 401);
         } 
     }
 
